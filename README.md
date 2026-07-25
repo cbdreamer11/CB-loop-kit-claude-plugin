@@ -1,5 +1,7 @@
 # loop-kit
 
+***English** · [Español](README.es.md)*
+
 A working method for building real software with coding agents, across many sessions.
 
 It exists to kill one specific failure: **work reported as finished that was never
@@ -17,7 +19,7 @@ framework, or a database — the only thing you write is a short file declaring 
 **As a plugin (recommended — updates with `/plugin update`):**
 
 ```
-/plugin marketplace add <your-github-user>/loop-kit
+/plugin marketplace add cbdreamer11/CB-loop-kit-claude
 ```
 
 then
