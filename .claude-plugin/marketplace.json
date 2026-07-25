@@ -1,5 +1,8 @@
 {
   "name": "loop-kit",
+  "owner": {
+    "name": "Caleb Elizondo"
+  },
   "plugins": [
     {
       "name": "loop-kit",
