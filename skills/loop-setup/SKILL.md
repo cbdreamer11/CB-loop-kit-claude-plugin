@@ -61,7 +61,9 @@ learned. **Show the list first and get a yes.**
 - `.loop/VERIFY.md` — the verification contract, filled in with *their* real commands
 - `.loop/DECISIONS.md` — append-only ledger
 - `.loop/GOTCHAS.md` — techniques learned the hard way, starts empty
-- `.loop/ACCESS.local.md` — how to reach test accounts and environments (gitignored)
+- `.loop/ACCESS.local.md` — how to reach test accounts and environments. **Copy it
+  from `templates/ACCESS.md`** (the template is not named `.local` so that a
+  `*.local.md` ignore rule cannot swallow it) and always gitignore the installed copy
 - `.loop/roles/{plan,build,verify,close}.json` — one launch profile per session role
 - `loop` at the repo root — the wrapper, `chmod +x`
 - `.claude/agents/loop-{planner,builder,verifier,auditor}.md` — copy the role agents

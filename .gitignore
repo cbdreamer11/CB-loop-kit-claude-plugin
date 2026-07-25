@@ -1,6 +1,10 @@
 # This repo is a method, not an app. Almost nothing should be ignored — the whole
-# point is that the protocol travels in git. Only genuinely local things go here.
+# point is that the protocol travels in git.
+#
+# Careful: do NOT add a broad `*.local.md` rule here. The kit installs a file called
+# `.loop/ACCESS.local.md` in the adopter's project, and the template for it lives at
+# `templates/ACCESS.md`. A `*.local.md` rule silently swallowed that template out of
+# the published package once — the push succeeded and the file simply was not there.
 
-*.local.md
 .DS_Store
 node_modules/
