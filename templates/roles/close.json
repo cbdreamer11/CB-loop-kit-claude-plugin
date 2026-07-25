@@ -1,5 +1,5 @@
 {
-  "$comment": "Close role. Adversarial audit before anything is published. If budget has to be cut somewhere, it is never here - the red team is the last thing standing between a slice and a lie.",
+  "$comment": "Close role. Adversarial audit before anything is published. If budget has to be cut somewhere, it is never here - the red team is the last thing standing between a slice and a lie. The model below is a DEFAULT - session 0 replaces it with the strongest model you actually have.",
   "agent": "loop-auditor",
   "model": "opus",
   "effortLevel": "xhigh"

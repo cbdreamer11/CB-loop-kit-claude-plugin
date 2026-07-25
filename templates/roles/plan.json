@@ -1,5 +1,5 @@
 {
-  "$comment": "Planning role. The most expensive session, and the one worth it: everything the cheaper sessions do is decided here. 'agent' applies that agent's system prompt, tool restrictions and model to the main thread. Aliases (not full model ids) so this profile survives model releases.",
+  "$comment": "Planning role. The most expensive session, and the one worth it: everything the cheaper sessions do is decided here. 'agent' applies that agent's system prompt, tool restrictions and model to the main thread. Aliases (not full model ids) so this profile survives model releases. The model below is a DEFAULT - session 0 replaces it with the strongest model you actually have, because an unavailable model can fall back silently.",
   "agent": "loop-planner",
   "model": "opus",
   "effortLevel": "xhigh"

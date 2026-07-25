@@ -87,10 +87,16 @@ main thread:
 
 | Role | Model / effort | Why |
 |---|---|---|
-| plan | opus / xhigh | decides what every cheaper session will do |
-| build | sonnet / medium | the workhorse; the hard calls are already made |
-| verify | sonnet / high | its job is to not be fooled |
-| close | opus / xhigh | adversarial audit before anything is published |
+| plan | strongest / xhigh | decides what every cheaper session will do |
+| build | mid-tier / medium | the workhorse; the hard calls are already made |
+| verify | mid-tier / high | its job is to not be fooled |
+| close | strongest / xhigh | adversarial audit before anything is published |
+
+Session 0 **asks which models you actually have** and writes those aliases into the
+profiles — plans differ, and a managed install can restrict models. If you only have
+one model, the method still works; it just loses the gradient. What it will never do is
+leave a profile pointing at a model you do not have, because an unavailable model can
+fall back silently, and a silent fallback is the exact failure this kit exists to prevent.
 
 **The limit, stated plainly:** a session cannot change its own model once it is
 running, and it cannot even read which model it is on. So a plan does not *switch*

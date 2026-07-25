@@ -35,7 +35,29 @@ For anything ABSENT, say in one line what will not be verifiable without it and
 what the cheapest substitute is. **Do not silently accept a gap** — an absent
 connection becomes a declared GAP in `.loop/VERIFY.md`, not a shrug.
 
-## 3 · Ask only what you cannot find out (these are the owner's calls)
+## 3 · Decide which models run which role
+
+Ask, do not guess: **which is the strongest model you have access to, and do you have
+one you would rather keep for the expensive steps?** Plans differ, and a managed
+install can restrict models outright.
+
+Explain the shape in one breath, then write the answer into `.loop/roles/*.json`:
+
+- **plan** and **close** want the strongest reasoning at the highest effort. These are
+  the two steps where being wrong is most expensive: a bad plan wastes every session
+  after it, and a soft audit lets a broken slice through.
+- **build** and **verify** can be a mid-tier model. The hard calls are already made.
+- Use **aliases** (`opus`, `sonnet`, `haiku`, or whatever the strongest tier is called
+  on their plan), never full model ids — aliases survive model releases.
+
+If they only have one model, say so plainly and write that one everywhere: the method
+still works, it just loses the quality gradient. **Never leave a profile pointing at a
+model they do not have** — an unavailable model can fall back silently, and a silent
+fallback is the exact failure this method exists to prevent. Then tell them to run
+`./loop doctor` once, and that no session can report which model it is on, so the
+profile is the only record.
+
+## 4 · Ask only what you cannot find out (these are the owner's calls)
 
 1. **Are the loop files versioned or local-only?** `.loop/` holds the plan, the
    decisions and the hard-won techniques. Committing them means the method survives
@@ -52,7 +74,7 @@ connection becomes a declared GAP in `.loop/VERIFY.md`, not a shrug.
 5. **Solo or team?** Solo: an item closes with a commit on a branch. Team: it closes
    with a pull request, green CI, and a reviewer.
 
-## 4 · Write the files
+## 5 · Write the files
 
 Copy from this skill's `templates/` directory into the project, filling in what you
 learned. **Show the list first and get a yes.**
@@ -69,7 +91,7 @@ learned. **Show the list first and get a yes.**
 - `.claude/agents/loop-{planner,builder,verifier,auditor}.md` — copy the role agents
   here so the project controls them (agents shipped inside a plugin cannot carry
   permission rules)
-- Append `.gitignore` entries according to their answer in step 3.1 — always
+- Append `.gitignore` entries according to their answer in step 4.1 — always
   `.loop/ACCESS.local.md`.
 
 Then append **six lines** to their `CLAUDE.md` (create it if absent), so that any
@@ -83,7 +105,7 @@ nothing lives only in someone's head. Nothing is "done" until it has been observ
 working, per `.loop/VERIFY.md`. Never push to the protected branch.
 ```
 
-## 5 · Close session 0
+## 6 · Close session 0
 
 Print: the connection table, the files written, the decisions recorded, and the
 exact next command — `./loop plan "<the first goal>"`. Then stop. Session 0 does

@@ -87,10 +87,17 @@ Trabajos distintos piden pensamientos distintos, así que cada rol es un perfil 
 
 | Rol | Modelo / esfuerzo | Para qué |
 |---|---|---|
-| plan | opus / xhigh | decide lo que harán todas las sesiones baratas |
-| build | sonnet / medium | el caballo de batalla; las decisiones difíciles ya se tomaron |
-| verify | sonnet / high | su trabajo es no dejarse engañar |
-| close | opus / xhigh | auditoría adversarial antes de publicar cualquier cosa |
+| plan | el más fuerte / xhigh | decide lo que harán todas las sesiones baratas |
+| build | intermedio / medium | el caballo de batalla; las decisiones difíciles ya se tomaron |
+| verify | intermedio / high | su trabajo es no dejarse engañar |
+| close | el más fuerte / xhigh | auditoría adversarial antes de publicar cualquier cosa |
+
+La sesión 0 **te pregunta qué modelos tienes de verdad** y escribe esos alias en los
+perfiles — los planes cambian, y una instalación gestionada puede restringir modelos. Si
+solo tienes uno, el método igual funciona; nada más pierde el gradiente. Lo que nunca hará
+es dejar un perfil apuntando a un modelo que no tienes, porque un modelo no disponible
+puede caer a otro **en silencio**, y una caída silenciosa es exactamente la falla que este
+kit existe para evitar.
 
 **El límite, sin adornos:** una sesión no puede cambiar su propio modelo mientras corre, y no
 puede ni leer en qué modelo está. Así que un plan no *cambia* la siguiente sesión — escribe el
