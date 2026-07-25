@@ -2,6 +2,9 @@
   "name": "loop-kit",
   "version": "0.1.0",
   "description": "A session-based working method for coding agents: plan an epic into thin complete slices, build one at a time, verify by observing real behaviour, and hand off so the next session starts where the last one stopped.",
+  "author": {
+    "name": "Caleb Elizondo"
+  },
   "keywords": [
     "workflow",
     "verification",
