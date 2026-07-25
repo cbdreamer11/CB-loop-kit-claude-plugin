@@ -19,7 +19,7 @@ framework, or a database — the only thing you write is a short file declaring 
 **As a plugin (recommended — updates with `/plugin update`):**
 
 ```
-/plugin marketplace add cbdreamer11/CB-loop-kit-claude
+/plugin marketplace add cbdreamer11/CB-loop-kit-claude-plugin
 ```
 
 then

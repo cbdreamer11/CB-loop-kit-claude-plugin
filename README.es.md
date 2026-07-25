@@ -19,7 +19,7 @@ se ve *"funciona de verdad"* en tu proyecto.
 **Como plugin (recomendado — se actualiza con `/plugin update`):**
 
 ```
-/plugin marketplace add cbdreamer11/CB-loop-kit-claude
+/plugin marketplace add cbdreamer11/CB-loop-kit-claude-plugin
 ```
 
 y después
