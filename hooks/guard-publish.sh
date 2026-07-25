@@ -10,14 +10,32 @@
 #
 # Bypassable by design (--safe-mode, disabled hooks, managed settings). This is a
 # guardrail against an honest mistake, not a security boundary.
+#
+# Known limitation, stated rather than hidden: matching is done on the payload text, so a
+# command that merely CONTAINS a forbidden string is blocked too — a test, a grep, or an
+# echo that quotes it. Distinguishing "runs a push" from "mentions a push" needs real
+# command parsing, which is not worth a fragile POSIX implementation. When it fires on a
+# false positive, rephrase the command or let the owner run it.
 
 ROOT=${CLAUDE_PROJECT_DIR:-.}
 VERIFY="$ROOT/.loop/VERIFY.md"
 PAYLOAD=$(cat)
 
-# Protected branch, as declared in VERIFY.md (falls back to the usual suspects).
+# Only enforce in a project that actually adopted the loop. Installing this plugin must
+# never change how git behaves in unrelated repositories — that is how a useful guard
+# becomes the reason someone uninstalls it. (Caught in real use: with no VERIFY.md the
+# guard fell back to protecting `main` everywhere and blocked a legitimate push in a
+# project that had never run setup.)
+#
+# Note the scope limit: the hook can only see the session's project directory. If you
+# work on repository A in a session rooted at repository B, A's rules are not the ones
+# being applied. Declared, not hidden.
+[ -f "$VERIFY" ] || exit 0
+
+# Protected branch, as declared in VERIFY.md. If the field is still the template blank,
+# protect the usual suspects — the project adopted the loop, it just has not filled it in.
 BRANCH=$(sed -n 's/^- Protected branch[^`]*`\([^`]*\)`.*/\1/p' "$VERIFY" 2>/dev/null | head -1)
-[ -z "$BRANCH" ] || [ "$BRANCH" = "______" ] && BRANCH="main master"
+case "$BRANCH" in ''|_____*) BRANCH="main master" ;; esac
 
 case "$PAYLOAD" in
   *"git push"*)

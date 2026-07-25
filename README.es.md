@@ -35,26 +35,44 @@ y después
 Luego, en el proyecto donde vas a trabajar:
 
 ```
-/loop-setup
+/loop-kit:loop-setup
 ```
 
 Esa es la **sesión 0**. Lee tu proyecto, comprueba qué conexiones funcionan de verdad, te
 hace las pocas preguntas que solo tú puedes contestar, y escribe los archivos. No construye
 nada.
 
+> Instalado como plugin, las skills llevan prefijo — `/loop-kit:loop-setup`. Si en vez de
+> eso copiaste las skills a `~/.claude/skills/`, son simplemente `/loop-setup`.
+
 ---
 
-## Los seis comandos
+## Los comandos
 
-| Comando | Qué hace |
-|---|---|
-| `/loop-setup` | Sesión 0. Detecta el stack, prueba las conexiones, escribe `.loop/`. Una vez por proyecto. |
-| `./loop plan "<objetivo>"` | Parte un objetivo en rebanadas delgadas y completas, y escribe el plan. |
-| `./loop build` | Construye la siguiente rebanada abierta, completa, y la verifica. |
-| `./loop verify` | Corre el contrato de verificación y juzga con honestidad. |
-| `./loop close` | Auditoría adversarial, bitácora, commit, entrega a la siguiente sesión. |
-| `./loop` | Sin argumentos: imprime dónde va el trabajo. No lanza nada. |
-| `./loop doctor` | Comprueba que el método está instalado y que el contrato todavía corre. |
+Dos formas de correr lo mismo. **Las skills son el método; el wrapper es solo un lanzador
+que además elige el modelo por ti.**
+
+| Lo que quieres | En la app de escritorio o un IDE | En una terminal |
+|---|---|---|
+| Sesión 0, una vez por proyecto | `/loop-kit:loop-setup` | `/loop-kit:loop-setup` |
+| Planear una épica | `/loop-kit:loop-plan <objetivo>` | `./loop plan "<objetivo>"` |
+| Construir la siguiente rebanada | `/loop-kit:loop` | `./loop build` |
+| Verificar con honestidad | `/loop-kit:loop-verify` | `./loop verify` |
+| Council para una duda abierta | `/loop-kit:loop-council` | — (invoca la skill) |
+| Auditar, registrar, entregar | `/loop-kit:loop-close` | `./loop close` |
+| ¿Dónde va el trabajo? | `/loop-kit:loop-doctor`, o lee `.loop/STATE.md` | `./loop` |
+| Revisar la instalación | `/loop-kit:loop-doctor` | `./loop doctor` |
+
+**La única diferencia real:** en una terminal, `./loop plan` lanza la sesión *con* el modelo
+y el esfuerzo ya puestos, porque un rol es un perfil de ajustes que se pasa al lanzar. En la
+app eliges el modelo tú mismo en el selector antes de invocar la skill — nada puede
+cambiarlo por ti, porque una sesión que ya corre no puede cambiar su propio modelo.
+
+Esa diferencia cuesta menos de lo que suena, y esta es la razón: `loop-plan`,
+`loop-council` y `loop-close` **despachan subagentes** cuyo modelo y esfuerzo están fijados
+en su propia definición. Así que incluso en la app, con una sesión de gama media, la
+planeación y el red-team los hace el modelo fuerte. El wrapper es comodidad; lo que protege
+la calidad es la arquitectura.
 
 ---
 
@@ -121,6 +139,11 @@ algo se verificó de verdad.** Un candado sobre "¿ya lo verificaste?" solo pued
 frase que el propio agente escribe, lo que le enseña a escribir la frase. Este kit no finge.
 Los dos hooks también son evitables por diseño (modo seguro, hooks apagados, ajustes
 gestionados) — son barandal contra un error honesto, no una frontera de seguridad.
+
+Dos límites que conviene saber antes de que te sorprendan. El guard **solo obliga en un
+proyecto que ya corrió la sesión 0** — instalar esto nunca debe cambiar cómo se comporta git
+en tus otros repos. Y compara contra el texto del comando, así que algo que solo *menciona*
+un comando bloqueado también se bloquea; reformúlalo, o que lo corra el dueño.
 
 ---
 

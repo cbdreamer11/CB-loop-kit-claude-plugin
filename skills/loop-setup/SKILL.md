@@ -53,9 +53,18 @@ Explain the shape in one breath, then write the answer into `.loop/roles/*.json`
 If they only have one model, say so plainly and write that one everywhere: the method
 still works, it just loses the quality gradient. **Never leave a profile pointing at a
 model they do not have** — an unavailable model can fall back silently, and a silent
-fallback is the exact failure this method exists to prevent. Then tell them to run
-`./loop doctor` once, and that no session can report which model it is on, so the
-profile is the only record.
+fallback is the exact failure this method exists to prevent. Then tell them that no
+session can report which model it is on, so the profile is the only record.
+
+Ask **how they work**, because it changes what the profiles are worth:
+
+- **In a terminal** — the `loop` wrapper launches each role with its model already set.
+  The profiles do the work; they never choose a model by hand again.
+- **In the desktop app or an IDE** — sessions are launched by the app, so the wrapper is
+  not the path. They invoke the skills directly and pick the model in the app's model
+  selector. Say this plainly instead of letting them think the profile applied. It costs
+  little: the plan, the council and the audit dispatch subagents whose model is fixed in
+  their own definitions, so the expensive thinking is strong either way.
 
 ## 4 · Ask only what you cannot find out (these are the owner's calls)
 
@@ -107,6 +116,7 @@ working, per `.loop/VERIFY.md`. Never push to the protected branch.
 
 ## 6 · Close session 0
 
-Print: the connection table, the files written, the decisions recorded, and the
-exact next command — `./loop plan "<the first goal>"`. Then stop. Session 0 does
-not build anything.
+Print: the connection table, the files written, the decisions recorded, and the exact
+next command **for the way they actually work** — `./loop plan "<the first goal>"` in a
+terminal, or "switch to your strongest model, then run the `loop-plan` skill with your
+goal" in the app. Then stop. Session 0 does not build anything.

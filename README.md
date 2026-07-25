@@ -35,25 +35,44 @@ for every project, or into `.claude/skills/` for one project. Copy `agents/*` in
 Then, in the project you want to work on:
 
 ```
-/loop-setup
+/loop-kit:loop-setup
 ```
 
 That is **session 0**. It reads your project, checks which connections actually work,
 asks the handful of decisions that are yours, and writes the files. It builds nothing.
 
+> Installed as a plugin, the skills are namespaced — `/loop-kit:loop-setup`. If you
+> copied the skills into `~/.claude/skills/` instead, they are just `/loop-setup`.
+
 ---
 
-## The six commands
+## The commands
 
-| Command | What it does |
-|---|---|
-| `/loop-setup` | Session 0. Detects the stack, tests the connections, writes `.loop/`. Once per project. |
-| `./loop plan "<goal>"` | Splits a goal into thin complete slices and writes the plan. |
-| `./loop build` | Builds the next open slice, completely, and verifies it. |
-| `./loop verify` | Runs the verification contract and judges honestly. |
-| `./loop close` | Adversarial audit, ledger entry, commit, handoff. |
-| `./loop` | No arguments: prints where the work stands. Launches nothing. |
-| `./loop doctor` | Checks the loop is really installed and the contract still runs. |
+Two ways to run the same thing. **The skills are the method; the wrapper is only a
+launcher that also picks the model for you.**
+
+| What you want | In the desktop app or an IDE | In a terminal |
+|---|---|---|
+| Session 0, once per project | `/loop-kit:loop-setup` | `/loop-kit:loop-setup` |
+| Plan an epic | `/loop-kit:loop-plan <goal>` | `./loop plan "<goal>"` |
+| Build the next slice | `/loop-kit:loop` | `./loop build` |
+| Verify honestly | `/loop-kit:loop-verify` | `./loop verify` |
+| Council on an open question | `/loop-kit:loop-council` | — (invoke the skill) |
+| Audit, record, hand off | `/loop-kit:loop-close` | `./loop close` |
+| Where does the work stand? | `/loop-kit:loop-doctor`, or read `.loop/STATE.md` | `./loop` |
+| Check the install | `/loop-kit:loop-doctor` | `./loop doctor` |
+
+**The one real difference:** in a terminal, `./loop plan` launches the session *with*
+the right model and effort already set, because a role is a settings profile passed at
+launch. In the app you pick the model yourself in the app's model selector before
+invoking the skill — nothing can switch it for you, since a running session cannot
+change its own model.
+
+That difference costs less than it sounds, and here is why: `loop-plan`,
+`loop-council` and `loop-close` **dispatch subagents** whose model and effort are fixed
+in their own definitions. So even in the app, on a mid-tier session, the planning and
+the red-teaming are done by the strong model. The wrapper is a convenience; the
+architecture is what protects the quality.
 
 ---
 
@@ -122,6 +141,11 @@ sentence the agent itself writes, which teaches it to write the sentence. So thi
 does not pretend. Both hooks are also bypassable by design (safe mode, disabled hooks,
 managed settings) — they are guardrails against an honest mistake, not a security
 boundary.
+
+Two limitations worth knowing before they surprise you. The guard **only enforces in a
+project that has run setup** — installing this must never change how git behaves in your
+other repositories. And it matches on the command text, so something that merely *mentions*
+a blocked command gets blocked too; rephrase it, or let the owner run it.
 
 ---
 
