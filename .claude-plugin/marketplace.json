@@ -1,0 +1,10 @@
+{
+  "name": "loop-kit",
+  "plugins": [
+    {
+      "name": "loop-kit",
+      "source": "./",
+      "description": "The loop: plan in slices, build complete, verify by observation, hand off cleanly. Session roles carry their own model and effort."
+    }
+  ]
+}

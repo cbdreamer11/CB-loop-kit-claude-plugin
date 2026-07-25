@@ -1,0 +1,6 @@
+{
+  "$comment": "Build role. The workhorse: most sessions are this one. Cheap on purpose - the plan already made the hard decisions, and the expensive thinking that is still needed gets dispatched to the council and auditor agents, which carry their own model.",
+  "agent": "loop-builder",
+  "model": "sonnet",
+  "effortLevel": "medium"
+}

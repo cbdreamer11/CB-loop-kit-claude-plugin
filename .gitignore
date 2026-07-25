@@ -1,0 +1,6 @@
+# This repo is a method, not an app. Almost nothing should be ignored — the whole
+# point is that the protocol travels in git. Only genuinely local things go here.
+
+*.local.md
+.DS_Store
+node_modules/

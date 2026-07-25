@@ -1,0 +1,28 @@
+{
+  "$comment": "Two hooks, deliberately. SessionStart mechanizes 'locate yourself' so no session starts blind. PreToolUse blocks the two things that are actually checkable by a machine. Everything else the method asks for is a nudge, not a gate - see the honesty section of the README.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"${CLAUDE_PLUGIN_ROOT}/hooks/guard-publish.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

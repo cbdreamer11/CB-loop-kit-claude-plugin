@@ -1,0 +1,6 @@
+{
+  "$comment": "Verify role. Higher effort than build because its whole job is to not be fooled - by a green build, by an exit code, by a 200, by its own hope.",
+  "agent": "loop-verifier",
+  "model": "sonnet",
+  "effortLevel": "high"
+}

@@ -1,0 +1,73 @@
+#!/bin/sh
+# loop — launch a session in a role, or show where the work stands.
+#
+#   ./loop                  where are we? (reads .loop/STATE.md, launches nothing)
+#   ./loop plan "<goal>"    planning session: split the epic into slices
+#   ./loop build            build the next open slice
+#   ./loop verify           run the verification contract
+#   ./loop close            audit, record, commit, hand off
+#   ./loop doctor           check that the loop is really installed
+#
+# A role is a settings profile: model + effort + the agent applied to the main
+# thread. A running session cannot change its own model, which is exactly why the
+# role is chosen here, at launch, instead of being remembered.
+#
+# Override effort for one run:  LOOP_EFFORT=max ./loop plan "..."
+
+set -e
+
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+STATE="$ROOT/.loop/STATE.md"
+ROLES="$ROOT/.loop/roles"
+ROLE=${1:-status}
+
+if [ "$ROLE" != "status" ] && ! command -v claude >/dev/null 2>&1; then
+  echo "loop: the 'claude' command is not on your PATH." >&2
+  exit 127
+fi
+
+case "$ROLE" in
+  status|"")
+    [ -f "$STATE" ] || { echo "loop: no .loop/STATE.md yet — run the loop-setup skill first."; exit 1; }
+    # Unfilled template lines contain <angle brackets>; never show them as real work.
+    NOISE='<[^>]*>'
+    echo "── goal ───────────────────────────────────────────"
+    grep -m1 -A1 '^\*\*Goal' "$STATE" | grep -vE "$NOISE" || true
+    echo
+    echo "── next open item ─────────────────────────────────"
+    NEXT=$(grep -m1 -A3 '^\[ \]' "$STATE" | grep -vE "$NOISE")
+    [ -n "$NEXT" ] && echo "$NEXT" || echo "(nothing open — plan the next epic: ./loop plan \"your goal\")"
+    echo
+    echo "── parked / gaps / blocked ────────────────────────"
+    BLOCKS=$(grep -E '^(GAP|PARKED|BLOCKED)' "$STATE" | grep -vE "$NOISE")
+    [ -n "$BLOCKS" ] && echo "$BLOCKS" || echo "(none)"
+    echo
+    echo "── recent commits ─────────────────────────────────"
+    git -C "$ROOT" log --oneline -5 2>/dev/null || true
+    exit 0
+    ;;
+  plan)   SKILL="/loop-plan" ;;
+  build)  SKILL="/loop" ;;
+  verify) SKILL="/loop-verify" ;;
+  close)  SKILL="/loop-close" ;;
+  doctor) SKILL="/loop-doctor" ;;
+  *)
+    echo "loop: unknown role '$ROLE'. Use: status | plan | build | verify | close | doctor" >&2
+    exit 2
+    ;;
+esac
+
+PROFILE="$ROLES/$ROLE.json"
+[ -f "$PROFILE" ] || PROFILE="$ROLES/build.json"
+
+shift 2>/dev/null || true
+EFFORT_ARG=""
+[ -n "${LOOP_EFFORT:-}" ] && EFFORT_ARG="--effort ${LOOP_EFFORT}"
+
+# shellcheck disable=SC2086
+if [ -f "$PROFILE" ]; then
+  exec claude --settings "$PROFILE" $EFFORT_ARG "$SKILL $*"
+else
+  echo "loop: no profile at $PROFILE — running with your default model." >&2
+  exec claude $EFFORT_ARG "$SKILL $*"
+fi
